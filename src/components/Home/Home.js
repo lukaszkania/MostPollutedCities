@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AutoComplete from '../AutoComplete/AutoComplete';
-import ListOfCities from '../ListOfCitiesComponent/ListOfCitiesComponent';
 import { COUNTRIES_API_URL } from '../../constants/API_URLS';
 import DESIRABLE_COUNTRIES from '../../constants/DESIRABLE_COUNTRY';
 import axios from 'axios';
@@ -34,7 +33,6 @@ class Home extends Component {
                 suggestions: DESIRABLE_COUNTRIES
 
             })
-            console.log(this.state.countriesObjects)
         }).catch(error => {
             console.log(error.message)
         })
@@ -45,7 +43,6 @@ class Home extends Component {
             <div className="home-container">
                 Home component
                 <AutoComplete suggestions={this.state.suggestions} />
-                <ListOfCities />
             </div>
         );
     }

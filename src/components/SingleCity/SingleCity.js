@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 
 class SingleCity extends Component {
-    state = {}
+    state = {
+        city: this.props.cityObject
+    }
     render() {
         return (
-            <div className="singlecity-container">
-                SingleCity component
-            </div>
+            <tr key={this.state.city.city}>
+                <td>{this.state.city.city}</td>
+                <td>{this.state.city.value}</td>
+                <td>{this.state.city.lastUpdated}</td>
+            </tr>
         );
     }
 }
