@@ -115,22 +115,22 @@ class AutoComplete extends Component {
         const results = []
         if (latestData) {
             latestData.map(object => {
-                if (object.measurements) {
-                    object.measurements.map(singleMeasurement => {
-                        if (singleMeasurement.parameter === "pm10" && singleMeasurement.unit === "µg/m³") {
-                            let cityName = object.city
-                            let pollutionValue = singleMeasurement.value
-                            let lastUpdated = singleMeasurement.lastUpdated.slice(0, 10)
-                            let objectResult = {
-                                city: this.formatCityNameString(cityName),
-                                value: pollutionValue,
-                                lastUpdated: lastUpdated
-                            }
-                            results.push(objectResult)
-                        }
-                    })
+                if (object.unit === "µg/m³") {
+                    let pollutionValue = object.value
+                    let cityName = object.city
+                    let localDateUpdated = object.date.local
+                    let utcDateUpdated = object.date.utc
+                    let objectResult = {
+                        city: cityName,
+                        value: pollutionValue,
+                        localDate: localDateUpdated,
+                        utcDate: utcDateUpdated
+                    }
+                    results.push(objectResult)
                 }
             })
+
+
             // Sorting results
             results.sort((a, b) => (a.value < b.value) ? 1 : -1)
             // Deleting repeated cities name
@@ -142,6 +142,7 @@ class AutoComplete extends Component {
                 flags[results[i].city] = true;
                 output.push(results[i]);
             }
+            console.log(output)
             return output
         }
     }
@@ -165,7 +166,7 @@ class AutoComplete extends Component {
                     })
                     // Getting all citites of inputed code ISO country
                     if (this.state.inputedCountryIsoCode) {
-                        axios.get(MEASUREMENTS + "?country=" + this.state.inputedCountryIsoCode + "&limit=10000").then(response => {
+                        axios.get(MEASUREMENTS + "?country=" + this.state.inputedCountryIsoCode + "&limit=10000&parameter=pm10").then(response => {
                             this.setState({
                                 inputedCountryCities: this.getTenMostPollutedCities(this.filterMeasurements(response.data.results))
                             })
