@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Home from './components/Home/Home';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import PageNotFound from './components/PageNotFound/PageNotFound';
 
 class App extends Component {
   state = {}
@@ -10,6 +11,7 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route component={PageNotFound} />
           </Switch>
         </BrowserRouter>
       </div>
