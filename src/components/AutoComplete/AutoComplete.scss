@@ -20,7 +20,6 @@
             li {
                 padding: 10px;
                 border: 1px gray none;
-                border-radius: 50%;
                 width: 140px;
                 list-style-type: none;
                 text-align: left;
@@ -32,10 +31,7 @@
                 transition: 0.5s all;
             }
 
-            .suggestion-active {
-                background-color: darksalmon;
-
-            }
+            .suggestion-active {}
         }
     }
 
