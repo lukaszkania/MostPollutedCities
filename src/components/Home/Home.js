@@ -3,6 +3,7 @@ import AutoComplete from '../AutoComplete/AutoComplete';
 import { COUNTRIES_API_URL } from '../../constants/API_URLS';
 import DESIRABLE_COUNTRIES from '../../constants/DESIRABLE_COUNTRY';
 import axios from 'axios';
+import './Home.scss';
 
 class Home extends Component {
     state = {
@@ -41,7 +42,7 @@ class Home extends Component {
     render() {
         return (
             <div className="home-container">
-                Home component
+                <h1>Pollution pm10 checker</h1>
                 <AutoComplete suggestions={this.state.suggestions} />
             </div>
         );

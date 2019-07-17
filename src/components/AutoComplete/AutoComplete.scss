@@ -1,0 +1,59 @@
+.autocomplete-container {
+    text-align: center;
+    padding: 10px;
+
+    InputGroup {
+        InputGroup.Prepend {
+            InputGroup.Text {}
+        }
+
+        FormControl {}
+    }
+
+    .suggestions {
+        position: absolute;
+        z-index: 1;
+
+        .suggestion-container {
+            margin: 5px 0 0 65px;
+
+            li {
+                padding: 10px;
+                border: 1px gray none;
+                border-radius: 50%;
+                width: 140px;
+                list-style-type: none;
+                text-align: left;
+                text-align: center;
+            }
+
+            li:hover {
+                background-color: darksalmon;
+                transition: 0.5s all;
+            }
+
+            .suggestion-active {
+                background-color: darksalmon;
+
+            }
+        }
+    }
+
+    .no-suggestions {
+        color: red;
+        text-align: left;
+        margin: 5px 0 0 100px;
+    }
+
+    button {
+        margin: 10px 0;
+    }
+
+    table {
+        letter-spacing: 1px;
+
+        th {
+            text-decoration-style: wavy;
+        }
+    }
+}

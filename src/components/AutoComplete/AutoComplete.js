@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { COUNTRIES_API_URL, MEASUREMENTS } from '../../constants/API_URLS';
 import SingleCity from '../SingleCity/SingleCity';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import './AutoComplete.scss';
+
 
 class AutoComplete extends Component {
     state = {
@@ -10,11 +15,13 @@ class AutoComplete extends Component {
         showSuggestions: false,
         userInput: '',
         inputedCountryIsoCode: '',
-        inputedCountryCities: []
+        inputedCountryCities: [],
     };
+
 
     // Event fired when user input something
     onChange = event => {
+
         const userInput = event.target.value; // Getting input from the user
         // Filter our suggestions that don't contain the user's input
         const filteredSuggestions = this.props.suggestions.filter(
@@ -27,7 +34,7 @@ class AutoComplete extends Component {
             activeSuggestion: 0,
             filteredSuggestions,
             showSuggestions: true,
-            userInput: event.target.value
+            userInput: event.target.value,
         });
     };
 
@@ -51,10 +58,17 @@ class AutoComplete extends Component {
     // Getting and setting data from local storage when component mount
     componentDidMount() {
         const locStoUserInput = localStorage.getItem("userInput")
+
         if (locStoUserInput) {
-            this.setState({
-                userInput: locStoUserInput
-            })
+            if (locStoUserInput === "undefined") {
+                this.setState({
+                    userInput: ""
+                })
+            } else {
+                this.setState({
+                    userInput: locStoUserInput
+                })
+            }
             this.getDataDependentFromUserInput()
         } else {
             this.setState({
@@ -124,7 +138,7 @@ class AutoComplete extends Component {
                         city: cityName,
                         value: pollutionValue,
                         localDate: localDateUpdated,
-                        utcDate: utcDateUpdated
+                        utcDate: utcDateUpdated,
                     }
                     results.push(objectResult)
                 }
@@ -142,7 +156,6 @@ class AutoComplete extends Component {
                 flags[results[i].city] = true;
                 output.push(results[i]);
             }
-            console.log(output)
             return output
         }
     }
@@ -197,7 +210,7 @@ class AutoComplete extends Component {
                 activeSuggestion,
                 filteredSuggestions,
                 showSuggestions,
-                userInput
+                userInput,
             }
         } = this;
         /*************************************************************SUGGESTIONS COMPONENT******************************************************************************** */
@@ -214,14 +227,16 @@ class AutoComplete extends Component {
                                 className = "suggestion-active";
                             }
                             return (
-                                <li
-                                    className={className}
-                                    key={suggestion}
-                                    onClick={onClick}
-                                    value={index}
-                                >
-                                    {suggestion}
-                                </li>
+                                <div className="suggestion-container">
+                                    <li
+                                        className={className}
+                                        key={suggestion}
+                                        onClick={onClick}
+                                        value={index}
+                                    >
+                                        {suggestion}
+                                    </li>
+                                </div>
                             );
                         })}
                     </ul>
@@ -238,42 +253,40 @@ class AutoComplete extends Component {
         let ListOfCitiesComponent;
         if (this.state.inputedCountryCities.length > 0) {
             ListOfCitiesComponent = (
-                <table>
-                    <tr>
-                        <td>City</td>
-                        <td>Value of pm10</td>
-                        <td>Last measurement</td>
-                    </tr>
-                    {this.state.inputedCountryCities.map(cityObject => {
+                <>
+                    {this.state.inputedCountryCities.map((cityObject, index) => {
                         return (
-                            <SingleCity key={cityObject.city} cityObject={cityObject} />
+
+                            <SingleCity key={cityObject.city} cityObject={cityObject} cityPosition={index + 1} />
                         )
                     })}
-                </table>
+                </>
+
             )
         } else {
-            ListOfCitiesComponent = (
-                <div className="no-avaliable-cities">
-                    There is a problem with API or You are inputing wrong country name...
-                </div>
-            )
+            if (userInput === "") {
+                ListOfCitiesComponent = (
+                    <div className="no-avaliable-cities">
+                        <em>Please insert suggested country name</em>
+                    </div>
+                )
+            }
         }
 
         return (
             <div className="autocomplete-container">
-                <input
-                    type="text"
+                <InputGroup size="lg"
+                    typeof="text"
                     onChange={onChange}
                     onKeyDown={onKeyDown}
-                    value={userInput}
-                    name="userInput"
-
-                />
-
-                <button onClick={this.handleClickButton} type="submit" value="submit" >
-                    Submit
-                </button>
+                    name="userInput">
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-lg">Country</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Input country name..." value={userInput} />
+                </InputGroup>
                 {suggestionsListComponent}
+                <Button onClick={this.handleClickButton} variant="primary">Check pollution</Button>
                 {ListOfCitiesComponent}
 
             </div>
